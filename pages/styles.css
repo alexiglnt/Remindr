@@ -1,0 +1,91 @@
+:root {
+  --main-color: #2C5DCE;
+  --bg-color: #fff;
+  --font-color: #333;
+  --navbar-color:rgba(0, 0, 0, 0.05);
+  --card-color: #fff;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  padding: 0 1rem 1rem 1rem;
+  /* max-width: 680px; */
+  margin: 0 100px;
+  background: var(--bg-color);
+  color: var(--font-color);
+}
+
+.dark-theme {
+  --main-color: #2C5DCE;
+  --bg-color: #333;
+  --font-color: #fff;
+  --navbar-color:rgba(255, 255, 255, 0.05);
+  --card-color: #444;
+}
+
+li,
+p {
+  line-height: 1.5rem;
+}
+
+a {
+  font-weight: 500;
+}
+
+hr {
+  border: 1px solid #ddd;
+}
+
+iframe {
+  background: #ccc;
+  border: 1px solid #ccc;
+  height: 10rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  filter: invert(1);
+}
+
+
+
+/****************************************************************************************************/
+
+.big-title {
+  font-size: 5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  color: var(--main-color);
+}
+
+.presentation-big-bloc {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  max-width: 90%;
+}
+
+.bloc-blue {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  width: 650px;
+  background: var(--card-color);
+  color: var(--font-color);
+  text-align: justify;
+}
+
+button {
+  background: var(--main-color);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
