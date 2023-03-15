@@ -7,7 +7,7 @@ import image1 from "../assets/reminder.svg"
 import image2 from "../assets/push.svg"
 
 // @ts-ignore
-import Helmet from "react-helmet"
+import Head from "next/head"
 
 
 export default function IndexPage() {
@@ -20,42 +20,23 @@ export default function IndexPage() {
     return data.users || [];
   }
 
-  const changeThemeMode = () => {
-    if (localStorage.getItem('theme')) {
-      localStorage.getItem('theme') === 'dark' ? localStorage.setItem('theme', 'light') : localStorage.setItem('theme', 'dark')
-    }
-
-    const body: any = document.querySelector('body')
-    body.classList.toggle('dark-theme')
-  }
-
   useEffect(() => {
     getUsers().then((data) => setUsers(data));
-
-    // Check if the user has already selected a theme
-    if (!localStorage.getItem('theme')) {
-      localStorage.setItem('theme', 'light')
-    } else {
-      const body: any = document.querySelector('body')
-      localStorage.getItem('theme') === 'dark' ? body.classList.add('dark-theme') : body.classList.remove('dark-theme')
-    }
-
   }, []);
 
 
   return (
     <Layout>
-
-      <Helmet>
+      <Head>
         <title>Remindr</title>
         <meta name="description" content="Une application simple pour vous aider à ne plus rien oublier." />
-      </Helmet>
+        <link rel="icon" href="../assets/logo.png" />
+      </Head>
+
 
       <center>
         <h1 className="big-title" >Bienvenue sur Remindr</h1>
         <h2>Une application simple pour vous aider à ne plus rien oublier.</h2>
-
-        <button type="button" onClick={changeThemeMode} > THEME MODE </button>
 
         <div className="presentation-big-bloc" >
           <p className="bloc-blue" >

@@ -4,7 +4,7 @@ import styles from "./header.module.css"
 import { useEffect, useState } from "react"
 
 // @ts-ignore
-import Helmet from "react-helmet"
+import Head from "next/head"
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
@@ -49,9 +49,10 @@ export default function Header() {
 
   return (
     <header>
-      <Helmet>
+      <Head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-      </Helmet>
+        <link rel="icon" href="../assets/logo.png" />
+      </Head>
       <noscript>
         <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
       </noscript>
@@ -108,32 +109,34 @@ export default function Header() {
 
       <nav>
         <ul className={styles.navItems}>
-          <li className={styles.navItem}>
-            <Link href="/">Home</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/client">Client</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/server">Server</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/protected">Protected</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/api-example">API</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/admin">Admin</Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/me">Me</Link>
-          </li>
+          <div>
+            <li className={styles.navItem}>
+              <Link href="/">Home</Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/client">Client</Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/server">Server</Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/protected">Protected</Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/api-example">API</Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/admin">Admin</Link>
+            </li>
+            <li className={styles.navItem}>
+              <Link href="/me">Me</Link>
+            </li>
+          </div>
           <button type="button" className={styles['no-style-btn']} onClick={changeThemeMode} >
             <span className={`material-symbols-outlined ${styles.toggleBtn}`} >
-              {toggleState} 
+              {toggleState}
             </span>
-            { toggleState === 'toggle_on' ? 'Dark Mode' : 'Light Mode' }
+            {toggleState === 'toggle_on' ? 'Dark Mode' : 'Light Mode'}
           </button>
         </ul>
       </nav>

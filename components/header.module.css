@@ -84,6 +84,11 @@
   margin-bottom: 2rem;
   padding: 0;
   list-style: none;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
 }
 
 .navItem {
@@ -99,12 +104,14 @@
   cursor: pointer;
   outline: inherit;
   color: var(--font-color);
+  transform: translateY(-8px);
 }
 
 .toggleBtn {
   color: var(--font-color);
-  font-size: 100px;
-  transform: translateY(6px);
-  padding-right: 8px;
+  font-size: 40px;
+  transform: translateY(15px);
+  padding-left: 0px;
+  padding-right: 10px;
 }
 
