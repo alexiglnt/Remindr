@@ -1,9 +1,10 @@
 :root {
   --main-color: #2C5DCE;
   --bg-color: #fff;
-  --font-color: #333;
+  --font-color: #333333;
   --navbar-color:rgba(0, 0, 0, 0.05);
-  --card-color: #fff;
+  --card-color: var(--main-color);
+  --grey-color: #f0f0f0;
 }
 
 body {
@@ -19,10 +20,11 @@ body {
 
 .dark-theme {
   --main-color: #2C5DCE;
-  --bg-color: #333;
+  --bg-color: #151a30;
   --font-color: #fff;
   --navbar-color:rgba(255, 255, 255, 0.05);
-  --card-color: #444;
+  --card-color: var(--main-color);
+  --grey-color: #282743;
 }
 
 li,
@@ -70,12 +72,13 @@ iframe {
 .bloc-blue {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 1.3rem;
   margin: 1rem 0;
   width: 650px;
   background: var(--card-color);
-  color: var(--font-color);
+  color: var(--bg-color);
   text-align: justify;
+  font-size: 1.2rem;
 }
 
 button {
@@ -87,5 +90,66 @@ button {
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  padding: 20px;
+  background-color: var(--grey-color);
+  border: 3px solid var(--main-color);
+  border-radius: 5px;
+}
+
+label {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border: 3px solid var(--main-color);
+}
+
+.GroupItem {
+  border-radius: 1em;
+  border: solid 3px var(--main-color);
+  background-color: var(--grey-color);
+  margin: 1rem 0;
+  transition: 0.1s ease ;
+  padding: 1px;
+  width: 70%;
+  cursor: pointer;
+}
+
+.GroupItem:hover {
+  transform: translateX(15px);
+  transition: 0.1s ease ;
+}
+
+.GroupItem h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  color: var(--main-color);
+  margin-left: 20px;
+}
+
+.GroupItem p {
+  margin-left: 20px;
 }
 

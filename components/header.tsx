@@ -111,26 +111,14 @@ export default function Header() {
         <ul className={styles.navItems}>
           <div>
             <li className={styles.navItem}>
-              <Link href="/">Home</Link>
+              <Link href="/"> <span className={`material-symbols-outlined ${styles.icon}`}> home </span> Home </Link>
             </li>
             <li className={styles.navItem}>
-              <Link href="/client">Client</Link>
+              <Link href="/Group"> <span className={`material-symbols-outlined ${styles.icon}`} > groups </span> Groups </Link>
             </li>
-            <li className={styles.navItem}>
-              <Link href="/server">Server</Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link href="/protected">Protected</Link>
-            </li>
-            <li className={styles.navItem}>
+            {/* <li className={styles.navItem}>
               <Link href="/api-example">API</Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link href="/admin">Admin</Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link href="/me">Me</Link>
-            </li>
+            </li> */}
           </div>
           <button type="button" className={styles['no-style-btn']} onClick={changeThemeMode} >
             <span className={`material-symbols-outlined ${styles.toggleBtn}`} >

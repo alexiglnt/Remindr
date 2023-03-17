@@ -96,6 +96,11 @@
   margin-right: 1rem;
 }
 
+.navItem a {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
 .no-style-btn {
   background: none;
   border: none;
@@ -113,5 +118,10 @@
   transform: translateY(15px);
   padding-left: 0px;
   padding-right: 10px;
+}
+
+.icon {
+  font-size: 1.5rem;
+  transform: translateY(5px);
 }
 
