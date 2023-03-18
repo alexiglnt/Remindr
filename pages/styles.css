@@ -1,5 +1,6 @@
 :root {
   --main-color: #2C5DCE;
+  --main-color-hover: #427bff;
   --bg-color: #fff;
   --font-color: #333333;
   --navbar-color:rgba(0, 0, 0, 0.05);
@@ -19,7 +20,6 @@ body {
 }
 
 .dark-theme {
-  --main-color: #2C5DCE;
   --bg-color: #151a30;
   --font-color: #fff;
   --navbar-color:rgba(255, 255, 255, 0.05);
@@ -92,6 +92,14 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background: var(--main-color-hover);
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 
 
 form {
@@ -125,6 +133,50 @@ input[type="text"]:focus {
   border: 3px solid var(--main-color);
 }
 
+input[type="date"] {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border: 3px solid var(--main-color);
+}
+
+input[type="color"] {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="color"]:focus {
+  outline: none;
+  border: 3px solid var(--main-color);
+}
+
+select {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+select:focus {
+  outline: none;
+  border: 3px solid var(--main-color);
+}
+
+
+
 .GroupItem {
   border-radius: 1em;
   border: solid 3px var(--main-color);
@@ -152,4 +204,89 @@ input[type="text"]:focus {
 .GroupItem p {
   margin-left: 20px;
 }
+
+
+.ReminderItem {
+  border-radius: 1em;
+  border: solid 3px var(--main-color);
+  background-color: var(--grey-color);
+  margin: 1rem 0;
+  transition: 0.1s ease ;
+  padding: 1px;
+  width: 70%;
+  cursor: pointer;
+}
+
+.ReminderItem:hover {
+  transform: translateX(15px);
+  transition: 0.1s ease ;
+}
+
+.ReminderItem h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  color: var(--main-color);
+  margin-left: 20px;
+}
+
+.ReminderItem p {
+  margin-left: 20px;
+}
+
+.ReminderItem span {
+  color: var(--font-color);
+  font-size: 1rem;
+}
+
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-gap: 2rem;
+  margin: 2rem 0;
+}
+
+.UserItem {
+  border-radius: 1em;
+  border: solid 3px var(--main-color);
+  background-color: var(--grey-color);
+  margin: 1rem 0;
+  transition: 0.1s ease ;
+  padding: 5px;
+  width: 300px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.UserItem h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  color: var(--main-color);
+  margin-left: 20px;
+}
+
+.UserItem p {
+  margin-left: 20px;
+}
+
+.UserItem span {
+  color: var(--font-color);
+  font-size: 1rem;
+}
+
+.UserItem img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid var(--font-color);
+  margin: 1rem 0;
+}
+
+.UserItem button {
+  margin: 1rem 0;
+} 
+
+
 

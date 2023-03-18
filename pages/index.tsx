@@ -1,30 +1,12 @@
 import Layout from "../components/layout"
-import { useState, useEffect } from "react"
-import { User } from "../interfaces"
-
 import Image from "next/image"
 import image1 from "../assets/reminder.svg"
 import image2 from "../assets/push.svg"
-
 // @ts-ignore
 import Head from "next/head"
 
 
 export default function IndexPage() {
-  const [users, setUsers] = useState([])
-
-  async function getUsers() {
-    const response = await fetch('/api/users')
-    const data = await response.json()
-    console.log(data.users)
-    return data.users || [];
-  }
-
-  useEffect(() => {
-    getUsers().then((data) => setUsers(data));
-  }, []);
-
-
   return (
     <Layout>
       <Head>
@@ -51,20 +33,6 @@ export default function IndexPage() {
             <b>Remindr</b> offre une fonctionnalité de groupe unique, qui vous permet d'inviter d'autres utilisateurs à rejoindre votre groupe sans avoir besoin de leurs adresses e-mail. Une fois qu'ils ont accepté votre invitation, vous pouvez tous <b>ajouter et modifier des rappels dans le groupe</b>. Vous pouvez également recevoir des rappels par e-mail une semaine avant la date limite, afin de ne jamais manquer un rendu important.<br />
           </p>
         </div>
-
-        <button>Commencer maintenant</button>
-        <h2>Découvrez qui utilise Reminder</h2>
-
-        <details>
-          <summary> Voir tout les utilisateurs </summary>
-          {users.map((user: User) => (
-            <div key={user.id}>
-              <h3>{user.name}</h3>
-              <p>{user.email}</p>
-              <img src={user.image} alt="" width="100px" />
-            </div>
-          ))}
-        </details>
       </center>
 
     </Layout>

@@ -11,3 +11,17 @@ export interface Group {
     description: string;
     image?: string;
 }
+
+export interface GroupUsers {
+    IdG: number;
+    IdU: string;
+}
+
+export interface Reminder {
+    id?: number;
+    title: string;
+    dateRendu: Date;
+    description: string;
+    couleur: string;
+    groupId: number;
+}

@@ -3,15 +3,17 @@ import Layout from "../../components/layout"
 import { useSession } from "next-auth/react"
 import AccessDenied from "../../components/access-denied"
 import { useRouter } from "next/router"
+// @ts-ignore
+import { Group, GroupUsers } from "@/interfaces"
+import Head from "next/head"
 
 // @ts-ignore
-import { Group } from "@/interfaces"
-
-import Head from "next/head"
+import { getGroups, getGroupsUsers, createGroupUser } from "../../functions/group"
 
 export default function Groups() {
     const { data: session } = useSession()
     const [groups, setGroups] = useState([])
+    const [groupUsers, setGroupUsers] = useState([])
     const router = useRouter();
 
 
@@ -21,14 +23,6 @@ export default function Groups() {
         const { name, description, image } = e.target.elements
         createGroup(name.value, description.value, image.value);
     }
-
-    const getUserGroups = async () => {
-        const response = await fetch('/api/groups')
-        const data = await response.json()
-        console.log(data.groups)
-        return data.groups || [];
-    }
-
 
     // Create a group
     const createGroup = async (name: string, description: string, image: string) => {
@@ -56,7 +50,7 @@ export default function Groups() {
             document.querySelector("form")?.reset();
             alert("Le groupe a bien été créé !");
 
-            getUserGroups().then((groups) => {
+            getGroups().then((groups) => {
                 setGroups(groups)
             })
 
@@ -68,35 +62,24 @@ export default function Groups() {
         }
     }
 
-    // Add userId and groupId to groupUser intermediate table
-    const createGroupUser = async (IdG: number, IdU: string) => {
-        const response = await fetch('/api/groups/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                IdG,
-                IdU,
-            }),
-        })
-        const data = await response.json()
-        console.log("data.groupUser", data.groupUser)
-
-        return data.groupUser || [];
-    }
-
     // Go to group page
     const goToGroupPage = (id: number) => {
         router.push(`/Group/${id}`)
     }
 
     useEffect(() => {
-        getUserGroups().then((groups) => {
-            setGroups(groups)
-        })
-    }, [])
-
+        // Récupérer les groupes de l'utilisateur depuis la table intermédiaire
+        getGroupsUsers().then((groupUsers) => {
+            // Créer un tableau contenant uniquement les IDs des groupes auxquels l'utilisateur appartient
+            const userGroupIds = groupUsers.filter((groupUser : GroupUsers) => groupUser.IdU === session?.user?.email).map((groupUser : GroupUsers) => groupUser.IdG);
+            // Récupérer tous les groupes
+            getGroups().then((groups) => {
+                // Filtrer les groupes pour n'afficher que ceux auxquels l'utilisateur appartient
+                const filteredGroups = groups.filter((group : Group) => userGroupIds.includes(group.id));
+                setGroups(filteredGroups);
+            });
+        });
+    }, []);
 
     // If no session exists, display access denied message
     if (!session) {
