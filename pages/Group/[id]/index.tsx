@@ -3,6 +3,7 @@ import Layout from "../../../components/layout"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import AccessDenied from "../../../components/access-denied"
+import Link from "next/link"
 
 // @ts-ignore
 import { Group, Reminder, User, GroupUsers } from "@/interfaces"
@@ -11,6 +12,7 @@ import { getUsers } from "../../../functions/user"
 // @ts-ignore
 import { getGroupsUsers } from "../../../functions/group"
 import Head from "next/head"
+import { redirect } from "next/dist/server/api-utils"
 
 export default function GroupPage() {
     const { data: session } = useSession()
@@ -24,6 +26,7 @@ export default function GroupPage() {
     const [colors, setColors] = useState(['red', 'violet', 'green', 'yellow'])
     const [nbMembers, setNbMembers] = useState(0)
 
+    const [groupModified, setGroupModified] = useState<Group>({})
 
     // Validation de l'id
     const isValidId = !isNaN(parseInt(id as string));
@@ -147,10 +150,45 @@ export default function GroupPage() {
     }
 
 
+    // Modification du groupe
+    const modifyGroup = async (e: any) => {
+        e.preventDefault()
+        const { newName, newDescription, newImage } = e.target.elements
+
+        const newGroup: Group = {
+            name: newName.value,
+            description: newDescription.value,
+            image: newImage.value,
+            id: id
+        }
+        
+        console.log("newGroup", newGroup)
+
+        const response = await fetch(`/api/groups/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newGroup),
+        })
+
+        const data = await response.json()
+        console.log("data.group", data.group)
+
+        getGroupInformations().then((group) => {
+            setCurrentGroup(group)
+        })
+
+        
+
+        return data.group || [];
+    }
+
 
     useEffect(() => {
         getGroupInformations().then((group) => {
             setCurrentGroup(group)
+            setGroupModified(group)
         })
 
         getReminders().then((reminders) => {
@@ -172,7 +210,7 @@ export default function GroupPage() {
 
 
     // If no session exists, display access denied message
-    if (!session || !isValidId) {
+    if (!session) {
         return (
             <Layout>
                 <AccessDenied />
@@ -210,10 +248,12 @@ export default function GroupPage() {
                                     </span>
                                 </h1>
 
+
                                 {/* DESCRIPTION */}
                                 <p style={{ fontStyle: 'italic' }} >
                                     {currentGroup.description}
                                 </p>
+                                {/* <button type="button" > Modifier groupe </button> */}
                             </div>
                         </div>
 
@@ -281,8 +321,8 @@ export default function GroupPage() {
 
                         <div className="users-grid" >
                             {users.map((user: User) => (
-                                <>
-                                    <div key={user.id} className="UserItem" >
+                                <div key={user.id} >
+                                    <div className="UserItem" >
                                         <img src={user.image} alt="" width="100px" />
                                         <h3>{user.name}</h3>
                                         <p>{user.email}</p>
@@ -295,13 +335,57 @@ export default function GroupPage() {
                                             </button>
                                         )}
                                     </div> <br />
-                                </>
+                                </div>
                             ))}
                         </div>
 
+                        <br /> <hr /> <br />
+
+                        <h1>  Modifier le groupe </h1>
+
+                        <form onSubmit={modifyGroup}>
+                            <label htmlFor="newName">Nom</label>
+                            <input
+                                type="text"
+                                name="newName"
+                                id="newName"
+                                value={groupModified?.name || ''}
+                                onChange={(e) => setGroupModified({ ...groupModified, name: e.target.value })}
+                                placeholder="Nom du groupe"
+                            />
+
+                            <label htmlFor="newDescription">Description</label>
+                            <input
+                                type="text"
+                                name="newDescription"
+                                id="newDescription"
+                                value={groupModified?.description || ''}
+                                onChange={(e) => setGroupModified({ ...groupModified, description: e.target.value })}
+                                placeholder="Description du groupe"
+                            />
+
+                            <label htmlFor="newImage">Image</label>          
+                            <input
+                                type="text"
+                                name="newImage"
+                                id="newImage"
+                                value={groupModified?.image || ''}
+                                onChange={(e) => setGroupModified({ ...groupModified, image: e.target.value })}
+                                placeholder="Image du groupe"
+                            /> <br />
+
+                            <button type="submit" > Modify groupe </button>
+                        </form> <br /> <br />
+
+
                     </>
                 ) : (
-                    <p>L'id n'est pas un nombre valide.</p>
+                    <>
+                        <p>L'id n'est pas un nombre valide.</p>
+                        <Link href="/" >
+                            <button type="button" > Retourner à la page d'accueil </button>
+                        </Link>
+                    </>
                 )}
             </div>
 

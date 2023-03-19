@@ -6,12 +6,18 @@ import AccessDenied from "../../../components/access-denied"
 // @ts-ignore
 import { Reminder } from "@/interfaces"
 import Head from "next/head"
+import { group } from "console"
 
 export default function ReminderPage() {
     const { data: session } = useSession()
     const router = useRouter();
     const { id } = router.query;
     const [currentReminder, setCurrentReminder] = useState<Reminder>({})
+    const [newReminder, setNewReminder] = useState<Reminder>({})
+    const [colors, setColors] = useState(['red', 'violet', 'green', 'yellow'])
+
+    const [dateFormatInput, setDateFormatInput] = useState("");
+
 
     const getReminderInformations = async () => {
         const response = await fetch(`/api/reminders/${id}`)
@@ -29,11 +35,62 @@ export default function ReminderPage() {
         return data.reminder || [];
     }
 
+
+    const modifyReminder = async (e: any) => {
+        e.preventDefault()
+
+        const { newTitle, newDescription, newDateRendu, newCouleur } = e.target.elements
+
+        const newReminder: Reminder = {
+            title: newTitle.value,
+            description: newDescription.value,
+            dateRendu: newDateRendu.value,
+            couleur: newCouleur.value,
+            groupId: currentReminder.groupId,
+            id: currentReminder.id
+        }
+
+        console.log("New reminder : ", newReminder)
+
+        const response = await fetch(`/api/reminders/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newReminder)
+        })
+
+        const data = await response.json()
+        console.log("Data : ", data)
+
+        getReminderInformations().then((reminder) => {
+            setCurrentReminder(reminder);
+
+            // Format the date for input
+            const dateParts = reminder.dateRendu.split('/');
+            const formattedDate = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
+
+            console.log("Formatted date : ", formattedDate)
+            setDateFormatInput(formattedDate);
+        });
+    }
+
+
+
     useEffect(() => {
         getReminderInformations().then((reminder) => {
-            setCurrentReminder(reminder)
-        })
-    }, [])
+            setCurrentReminder(reminder);
+            setNewReminder(reminder);
+
+            // Format the date for input
+            const dateParts = reminder.dateRendu.split('/');
+            const formattedDate = `${dateParts[2]}-${dateParts[1].padStart(2, '0')}-${dateParts[0].padStart(2, '0')}`;
+
+            console.log("Formatted date : ", formattedDate)
+            setDateFormatInput(formattedDate);
+        });
+    }, []);
+
 
 
 
@@ -57,11 +114,75 @@ export default function ReminderPage() {
             </Head>
 
             <div>
-                <h1> {currentReminder.title} </h1>
-                <p> {currentReminder.description} </p>
-                <p> {currentReminder.dateRendu} </p>
+                <div className="colorPlusTitle" style={{ display: 'flex', alignItems: 'center' }} >
+                    <div style={{
+                        background: `${colors[parseInt(currentReminder.couleur) - 1]}`,
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        marginRight: '20px'
+                    }} >
+                    </div>
+                    <h1 style={{ fontSize: '40px', color: 'var(--main-color)' }} > {currentReminder.title} </h1>
+                </div>
+                <fieldset style={{borderRadius: '5px', border: '1px solid #ccc'}} >
+                    <legend style={{fontWeight: '600', fontSize: '22px'}} > Description </legend>
+                    <p style={{ fontSize: '20px' }} > <i> {currentReminder.description} </i> </p> <br /> <br />
+                    <p> {currentReminder.dateRendu} </p>
+                </fieldset>
 
-            </div>
+            </div> <br /> <br />
+
+            <br /> <hr /> <br />
+
+            <h1>  Modifier le reminder </h1>
+
+            <form onSubmit={modifyReminder}>
+                <label htmlFor="newTitle">Title</label>
+                <input
+                    type="text"
+                    name="newTitle"
+                    id="newTitle"
+                    value={newReminder.title}
+                    onChange={(e) => setNewReminder({ ...newReminder, title: e.target.value })}
+                    placeholder="Titre du reminder"
+                />
+
+                <label htmlFor="newDescription">Description</label>
+                <input
+                    type="text"
+                    name="newDescription"
+                    id="newDescription"
+                    value={newReminder.description}
+                    onChange={(e) => setNewReminder({ ...newReminder, description: e.target.value })}
+                    placeholder="Description du reminder"
+                />
+
+                <label htmlFor="newDateRendu"> Date rendu du reminder </label>
+                <input
+                    type="date"
+                    name="newDateRendu"
+                    id="newDateRendu"
+                    value={dateFormatInput}
+                    onChange={(e) => setNewReminder({ ...newReminder, dateRendu: e.target.value })}
+                    onInput={(e: React.FormEvent<HTMLInputElement>) => setDateFormatInput(e.currentTarget.value)}
+                    placeholder="Date de rendu du reminder"
+                />
+
+
+                <label htmlFor="newCouleur"> Couleur </label>
+                <select name="newCouleur" id="newCouleur"
+                    value={newReminder.couleur}
+                    onChange={(e) => setNewReminder({ ...newReminder, couleur: e.target.value })}
+                >
+                    <option value="1"> Rouge 🔴 </option>
+                    <option value="2"> Violet 🟣 </option>
+                    <option value="3"> Vert 🟢 </option>
+                    <option value="4"> Jaune 🟡 </option>
+                </select>
+
+                <button type="submit" > Modify groupe </button>
+            </form> <br /> <br />
 
 
 

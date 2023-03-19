@@ -186,6 +186,9 @@ select:focus {
   padding: 1px;
   width: 70%;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
 }
 
 .GroupItem:hover {
@@ -203,6 +206,14 @@ select:focus {
 
 .GroupItem p {
   margin-left: 20px;
+}
+
+.GroupItem img {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  margin-left: 20px;
+  object-fit: cover;
 }
 
 

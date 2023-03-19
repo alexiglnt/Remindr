@@ -14,4 +14,21 @@ export default async function ReminderID(req: NextApiRequest, res: NextApiRespon
         });
         res.status(200).json({ reminder });
     }
+    else if (req.method === 'PUT') {
+        const { title, description, dateRendu, couleur, groupId } = req.body;
+
+        const reminder = await prisma.reminder.update({
+            where: {
+                id: parseInt(id as string),
+            },
+            data: {
+                title,
+                description,
+                dateRendu: new Date(dateRendu),
+                couleur: parseInt(couleur), // Convertir en entier
+                groupId: parseInt(groupId) // Convertir en entier
+            }
+        });
+        res.status(200).json({ reminder });
+    }
 }

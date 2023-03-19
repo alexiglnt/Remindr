@@ -71,11 +71,11 @@ export default function Groups() {
         // Récupérer les groupes de l'utilisateur depuis la table intermédiaire
         getGroupsUsers().then((groupUsers) => {
             // Créer un tableau contenant uniquement les IDs des groupes auxquels l'utilisateur appartient
-            const userGroupIds = groupUsers.filter((groupUser : GroupUsers) => groupUser.IdU === session?.user?.email).map((groupUser : GroupUsers) => groupUser.IdG);
+            const userGroupIds = groupUsers.filter((groupUser: GroupUsers) => groupUser.IdU === session?.user?.email).map((groupUser: GroupUsers) => groupUser.IdG);
             // Récupérer tous les groupes
             getGroups().then((groups) => {
                 // Filtrer les groupes pour n'afficher que ceux auxquels l'utilisateur appartient
-                const filteredGroups = groups.filter((group : Group) => userGroupIds.includes(group.id));
+                const filteredGroups = groups.filter((group: Group) => userGroupIds.includes(group.id));
                 setGroups(filteredGroups);
             });
         });
@@ -103,8 +103,11 @@ export default function Groups() {
             <div>
                 {groups.map((group: Group) => (
                     <div key={group.id} className="GroupItem" onClick={() => goToGroupPage(group.id)} >
-                        <h3>{group.name}</h3>
-                        <p>{group.description}</p>
+                        <img src={group.image} alt=""/>
+                        <div>
+                            <h3>{group.name}</h3>
+                            <p>{group.description}</p>
+                        </div>
                     </div>
                 ))}
             </div>
