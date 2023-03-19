@@ -24,5 +24,4 @@ export default async function Reminders(req: NextApiRequest, res: NextApiRespons
 
         res.json({ reminder });
     }
-
 }

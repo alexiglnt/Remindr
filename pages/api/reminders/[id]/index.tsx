@@ -31,4 +31,15 @@ export default async function ReminderID(req: NextApiRequest, res: NextApiRespon
         });
         res.status(200).json({ reminder });
     }
+    else if (req.method === 'DELETE') {
+        const { id } = req.body;
+
+        const reminder = await prisma.reminder.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+
+        res.json({ reminder });
+    }
 }

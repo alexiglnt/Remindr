@@ -48,7 +48,6 @@ export default function Groups() {
 
             // On vide le formulaire
             document.querySelector("form")?.reset();
-            alert("Le groupe a bien été créé !");
 
             getGroups().then((groups) => {
                 setGroups(groups)

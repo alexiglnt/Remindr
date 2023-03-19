@@ -75,6 +75,30 @@ export default function ReminderPage() {
         });
     }
 
+    // Delete a reminder
+    const deleteReminder = async (e: any) => {
+        e.preventDefault()
+
+        const confirmation = prompt("Pour confirmer la suppression, veuillez taper le mot 'supprimer' : ")
+        if (confirmation === "supprimer") {
+            const response = await fetch(`/api/reminders/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: id })
+            })
+
+            const data = await response.json()
+            console.log("Data : ", data)
+
+            alert("Le rappel a bien été supprimé ! Vous allez être redirigé vers la page des groupes.")
+            router.push(`/Group`)
+        } else {
+            alert("La reminder n'a pas été annulé !")
+        }
+    }
+
 
 
     useEffect(() => {
@@ -125,8 +149,8 @@ export default function ReminderPage() {
                     </div>
                     <h1 style={{ fontSize: '40px', color: 'var(--main-color)' }} > {currentReminder.title} </h1>
                 </div>
-                <fieldset style={{borderRadius: '5px', border: '1px solid #ccc'}} >
-                    <legend style={{fontWeight: '600', fontSize: '22px'}} > Description </legend>
+                <fieldset style={{ borderRadius: '5px', border: '1px solid #ccc' }} >
+                    <legend style={{ fontWeight: '600', fontSize: '22px' }} > Description </legend>
                     <p style={{ fontSize: '20px' }} > <i> {currentReminder.description} </i> </p> <br /> <br />
                     <p> {currentReminder.dateRendu} </p>
                 </fieldset>
@@ -181,8 +205,16 @@ export default function ReminderPage() {
                     <option value="4"> Jaune 🟡 </option>
                 </select>
 
-                <button type="submit" > Modify groupe </button>
+                <button type="submit" > Modifier le groupe </button>
             </form> <br /> <br />
+
+            <br /> <hr /> <br />
+
+            <h1>  Supprimer ce reminder </h1>
+            <button type="button" onClick={deleteReminder} > 
+                Supprimer &nbsp;
+                <span className="material-symbols-outlined" style={{transform: 'translateY(4px)', fontSize: '18px'}} > delete </span>
+            </button>
 
 
 

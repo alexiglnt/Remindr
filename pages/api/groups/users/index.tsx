@@ -23,4 +23,18 @@ export default async function GroupsUser(req: NextApiRequest, res: NextApiRespon
     
             res.status(200).json({ groupUser });
     }
+    else if (req.method === 'DELETE') {
+        const { IdG, IdU } = req.body;
+
+        const groupUser = await prisma.groupeusers.delete({
+            where: {
+                IdG_IdU: {
+                    IdG,
+                    IdU
+                }
+            }
+        });
+
+        res.status(200).json({ groupUser });
+    }
 }

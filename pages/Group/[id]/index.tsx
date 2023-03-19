@@ -27,6 +27,7 @@ export default function GroupPage() {
     const [nbMembers, setNbMembers] = useState(0)
 
     const [groupModified, setGroupModified] = useState<Group>({})
+    const [sessionUser, setSessionUser] = useState<User>(session?.user)
 
     // Validation de l'id
     const isValidId = !isNaN(parseInt(id as string));
@@ -161,7 +162,7 @@ export default function GroupPage() {
             image: newImage.value,
             id: id
         }
-        
+
         console.log("newGroup", newGroup)
 
         const response = await fetch(`/api/groups/${id}`, {
@@ -179,9 +180,39 @@ export default function GroupPage() {
             setCurrentGroup(group)
         })
 
-        
+
 
         return data.group || [];
+    }
+
+    const leaveGroup = async (IdG: number, IdU: string) => {
+
+        const confirmation = prompt("Pour confirmer, veuillez taper le mot 'quitter' : ")
+
+        if (confirmation == "quitter") {
+
+            const response = await fetch(`/api/groups/users`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ IdG, IdU }),
+            })
+
+            const data = await response.json()
+            console.log("data.groupUser", data.groupUser)
+
+            getGroupsUsers().then((groupsUsers) => {
+                setGroupUsers(groupsUsers)
+            })
+
+            alert("Vous avez quitté le groupe. Vous allez être redirigé vers la page des groupes.")
+            router.push(`/Group`)
+
+            return data.groupUser || [];
+        } else {
+            alert("La suppression a été annulée")
+        }
     }
 
 
@@ -261,7 +292,7 @@ export default function GroupPage() {
 
                         <br /> <hr /> <br />
 
-                        <h1> Vos reminders </h1>
+                        <h1> Vos reminders <span style={{ fontSize: '20px' }} > ({reminders.length}) </span> </h1>
                         {reminders.length > 0 ?
                             reminders.map((reminder: Reminder) => (
                                 <div key={reminder.id} className="ReminderItem" onClick={() => goToReminderPage(reminder.id)} >
@@ -364,7 +395,7 @@ export default function GroupPage() {
                                 placeholder="Description du groupe"
                             />
 
-                            <label htmlFor="newImage">Image</label>          
+                            <label htmlFor="newImage">Image</label>
                             <input
                                 type="text"
                                 name="newImage"
@@ -377,6 +408,11 @@ export default function GroupPage() {
                             <button type="submit" > Modify groupe </button>
                         </form> <br /> <br />
 
+                        <br /> <hr /> <br />
+
+                        <h1>  Quitter le groupe </h1>
+
+                        <button type="button" onClick={() => leaveGroup(currentGroup.id, sessionUser?.email)} > Quitter le groupe </button>
 
                     </>
                 ) : (
