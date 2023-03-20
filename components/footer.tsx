@@ -16,7 +16,7 @@ export default function Footer() {
         <ul className={styles.navItems}>
           <li className={styles.navItem}>
             <a href="https://github.com/alexiglnt/Remindr" target="_blank" >
-            <i className="fa fa-github" style={{fontSize: '24px', color: 'black', marginRight: '5px'}} ></i>
+            <i className="fa fa-github" style={{fontSize: '24px', color: 'var(--font-color)', marginRight: '5px'}} ></i>
               Repository GitHub
             </a>
           </li>

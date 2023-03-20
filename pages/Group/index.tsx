@@ -78,16 +78,13 @@ export default function Groups() {
                 setGroups(filteredGroups);
             });
         });
+
+        if (!session) {
+            router.push("/");
+        }
+
     }, []);
 
-    // If no session exists, display access denied message
-    if (!session) {
-        return (
-            <Layout>
-                <AccessDenied />
-            </Layout>
-        )
-    }
 
     // If session exists, display content
     return (

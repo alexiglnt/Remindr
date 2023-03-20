@@ -97,6 +97,7 @@ export default function Header() {
                 className={styles.button}
                 onClick={(e) => {
                   e.preventDefault()
+                  
                   signOut()
                 }}
               >
@@ -113,12 +114,13 @@ export default function Header() {
             <li className={styles.navItem}>
               <Link href="/"> <span className={`material-symbols-outlined ${styles.icon}`}> home </span> Home </Link>
             </li>
-            <li className={styles.navItem}>
-              <Link href="/Group"> <span className={`material-symbols-outlined ${styles.icon}`} > groups </span> Groups </Link>
-            </li>
-            {/* <li className={styles.navItem}>
-              <Link href="/api-example">API</Link>
-            </li> */}
+            {session && (
+              <>
+                <li className={styles.navItem}>
+                  <Link href="/Group"> <span className={`material-symbols-outlined ${styles.icon}`} > groups </span> Groups </Link>
+                </li>
+              </>
+            )}
           </div>
           <button type="button" className={styles['no-style-btn']} onClick={changeThemeMode} >
             <span className={`material-symbols-outlined ${styles.toggleBtn}`} >

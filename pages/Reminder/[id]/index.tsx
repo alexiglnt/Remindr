@@ -113,20 +113,13 @@ export default function ReminderPage() {
             console.log("Formatted date : ", formattedDate)
             setDateFormatInput(formattedDate);
         });
+
+        if (!session) {
+            router.push("/");
+        }
     }, []);
 
 
-
-
-
-    // If no session exists, display access denied message
-    if (!session) {
-        return (
-            <Layout>
-                <AccessDenied />
-            </Layout>
-        )
-    }
 
     // If session exists, display content
     return (

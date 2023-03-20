@@ -233,21 +233,16 @@ export default function GroupPage() {
         getGroupsUsers().then((groupsUsers) => {
             setGroupUsers(groupsUsers)
         })
+
+        if (!session) {
+            router.push("/");
+        }
     }, [])
 
     useEffect(() => {
         initNbmembers();
     }, [groupUsers])
 
-
-    // If no session exists, display access denied message
-    if (!session) {
-        return (
-            <Layout>
-                <AccessDenied />
-            </Layout>
-        )
-    }
 
     // If session exists, display content
     return (
