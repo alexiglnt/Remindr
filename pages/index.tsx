@@ -12,7 +12,6 @@ export default function IndexPage() {
       <Head>
         <title>Remindr</title>
         <meta name="description" content="Une application simple pour vous aider à ne plus rien oublier." />
-        <link rel="icon" href="../assets/logo.png" />
       </Head>
 
 
