@@ -37,15 +37,12 @@ export default function ReminderPage() {
 
         console.log(formattedDateICS)
 
-        var icsString = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:" + currentReminder.id + "//NONSGML v1.0//EN\nBEGIN:VEVENT\nUID:me@google.com\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=My Self ;RSVP=TRUE:MAILTO:me@gmail.com\nORGANIZER;CN=Me:MAILTO::me@gmail.com\nDTSTART:" + formattedDateICS +"\nDTEND:" + formattedDateICS + "\nSUMMARY:" + currentReminder.title + "\nDESCRIPTION:" + currentReminder.description + "\nEND:VEVENT\nEND:VCALENDAR";
+        var icsString = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:" + currentReminder.id + "//NONSGML v1.0//EN\nBEGIN:VEVENT\nUID:me@google.com\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=My Self ;RSVP=TRUE:MAILTO:me@gmail.com\nORGANIZER;CN=Me:MAILTO::me@gmail.com\nDTSTART:" + formattedDateICS + "\nDTEND:" + formattedDateICS + "\nSUMMARY:" + currentReminder.title + "\nDESCRIPTION:" + currentReminder.description + "\nEND:VEVENT\nEND:VCALENDAR";
 
 
         const blob = new Blob([icsString], { type: "text/calendar;charset=utf-8" });
         saveAs(blob, `${currentReminder.title}.ics`);
     };
-
-
-
 
 
     const getReminderInformations = async () => {
@@ -176,7 +173,10 @@ export default function ReminderPage() {
                     <p style={{ fontSize: '20px' }} > <i> {currentReminder.description} </i> </p> <br /> <br />
                     <p> {currentReminder.dateRendu} </p>
 
-                    <button type="button" onClick={exportReminderToICS} > ICS </button>
+                    <button type="button" onClick={exportReminderToICS} >
+                        Exporter en ICS &nbsp;
+                        <span className="material-symbols-outlined" style={{transform: 'translateY(3px)', fontSize: '20px'}} > event </span>
+                    </button>
 
                 </fieldset>
 
