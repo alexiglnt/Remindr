@@ -6,7 +6,9 @@ import AccessDenied from "../../../components/access-denied"
 // @ts-ignore
 import { Reminder } from "@/interfaces"
 import Head from "next/head"
-import { group } from "console"
+import { group, log } from "console"
+// @ts-ignore
+import { saveAs } from "file-saver";
 
 export default function ReminderPage() {
     const { data: session } = useSession()
@@ -17,6 +19,33 @@ export default function ReminderPage() {
     const [colors, setColors] = useState(['red', 'violet', 'green', 'yellow'])
 
     const [dateFormatInput, setDateFormatInput] = useState("");
+
+
+    const exportReminderToICS = () => {
+
+        var date_entree = currentReminder.dateRendu;
+        // Utiliser la méthode `split` pour séparer la chaîne de caractères en trois parties: jour, mois et année
+        var date_separee = date_entree.split("/");
+        // Créer un objet Date à partir des éléments de la date
+        var date_objet = new Date(date_separee[2], date_separee[1] - 1, date_separee[0]);
+        // Utiliser les méthodes `getFullYear`, `getMonth` et `getDate` pour récupérer l'année, le mois et le jour de la date
+        var annee = date_objet.getFullYear();
+        var mois = (date_objet.getMonth() + 1).toString().padStart(2, "0");
+        var jour = date_objet.getDate().toString().padStart(2, "0");
+        // Formater la date au format ISO 8601 avec l'heure à 22h00 et le fuseau horaire UTC
+        var formattedDateICS = `${annee}${mois}${jour}T220000Z`;
+
+        console.log(formattedDateICS)
+
+        var icsString = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:" + currentReminder.id + "//NONSGML v1.0//EN\nBEGIN:VEVENT\nUID:me@google.com\nDTSTAMP:20120315T170000Z\nATTENDEE;CN=My Self ;RSVP=TRUE:MAILTO:me@gmail.com\nORGANIZER;CN=Me:MAILTO::me@gmail.com\nDTSTART:" + formattedDateICS +"\nDTEND:" + formattedDateICS + "\nSUMMARY:" + currentReminder.title + "\nDESCRIPTION:" + currentReminder.description + "\nEND:VEVENT\nEND:VCALENDAR";
+
+
+        const blob = new Blob([icsString], { type: "text/calendar;charset=utf-8" });
+        saveAs(blob, `${currentReminder.title}.ics`);
+    };
+
+
+
 
 
     const getReminderInformations = async () => {
@@ -125,7 +154,7 @@ export default function ReminderPage() {
     return (
         <Layout>
             <Head>
-                <title>Remindr | Groups </title>
+                <title>Remindr | {currentReminder.title} </title>
                 <meta name="description" content="Une application simple pour vous aider à ne plus rien oublier." />
                 <link rel="icon" href="../assets/logo.png" />
             </Head>
@@ -146,6 +175,9 @@ export default function ReminderPage() {
                     <legend style={{ fontWeight: '600', fontSize: '22px' }} > Description </legend>
                     <p style={{ fontSize: '20px' }} > <i> {currentReminder.description} </i> </p> <br /> <br />
                     <p> {currentReminder.dateRendu} </p>
+
+                    <button type="button" onClick={exportReminderToICS} > ICS </button>
+
                 </fieldset>
 
             </div> <br /> <br />
@@ -204,9 +236,9 @@ export default function ReminderPage() {
             <br /> <hr /> <br />
 
             <h1>  Supprimer ce reminder </h1>
-            <button type="button" onClick={deleteReminder} > 
+            <button type="button" onClick={deleteReminder} >
                 Supprimer &nbsp;
-                <span className="material-symbols-outlined" style={{transform: 'translateY(4px)', fontSize: '18px'}} > delete </span>
+                <span className="material-symbols-outlined" style={{ transform: 'translateY(4px)', fontSize: '18px' }} > delete </span>
             </button>
 
 
