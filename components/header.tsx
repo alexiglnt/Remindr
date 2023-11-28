@@ -53,83 +53,27 @@ export default function Header() {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
         <link rel="icon" href="../assets/logo.png" />
       </Head>
-      <noscript>
-        <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
-      </noscript>
-      <div className={styles.signedInStatus}>
-        <p
-          className={`nojs-show ${!session && loading ? styles.loading : styles.loaded
-            }`}
-        >
-          {!session && (
-            <>
-              <span className={styles.notSignedInText}>
-                You are not signed in
-                {/* // THEME MODE BUTTON */}
-              </span>
-              <a
-                href={`/api/auth/signin`}
-                className={styles.buttonPrimary}
-                onClick={(e) => {
-                  e.preventDefault()
-                  signIn()
-                }}
-              >
-                Sign in
-              </a>
-            </>
-          )}
-          {session?.user && (
-            <>
-              {session.user.image && (
-                <span
-                  style={{ backgroundImage: `url('${session.user.image}')` }}
-                  className={styles.avatar}
-                />
-              )}
-              <span className={styles.signedInText}>
-                <small>Signed in as</small>
-                <br />
-                <strong>{session.user.email ?? session.user.name}</strong>
-              </span>
-              <a
-                href={`/api/auth/signout`}
-                className={styles.button}
-                onClick={(e) => {
-                  e.preventDefault()
-                  
-                  signOut()
-                }}
-              >
-                Sign out
-              </a>
-            </>
-          )}
-        </p>
+
+      <div className={styles.loaded} >
+
+        {/* ----- BOUTON DARK MODE ----- */}
+
+        <div>
+          <h2> Equa-Diff-Resolve </h2>
+        </div>
+
+
+        <button type="button" className={styles['no-style-btn']} onClick={changeThemeMode} >
+          <span className={`material-symbols-outlined ${styles.toggleBtn}`} >
+            {toggleState}
+          </span>
+          {toggleState === 'toggle_on' ? 'Dark Mode' : 'Light Mode'}
+        </button>
+
       </div>
 
-      <nav>
-        <ul className={styles.navItems}>
-          <div>
-            <li className={styles.navItem}>
-              <Link href="/"> <span className={`material-symbols-outlined ${styles.icon}`}> home </span> Home </Link>
-            </li>
-            {session && (
-              <>
-                <li className={styles.navItem}>
-                  <Link href="/Group"> <span className={`material-symbols-outlined ${styles.icon}`} > groups </span> Groups </Link>
-                </li>
-              </>
-            )}
-          </div>
-          <button type="button" className={styles['no-style-btn']} onClick={changeThemeMode} >
-            <span className={`material-symbols-outlined ${styles.toggleBtn}`} >
-              {toggleState}
-            </span>
-            {toggleState === 'toggle_on' ? 'Dark Mode' : 'Light Mode'}
-          </button>
-        </ul>
-      </nav>
+      <br /> <br />
+
     </header>
   )
 }

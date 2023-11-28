@@ -1,41 +1,149 @@
-import Layout from "../components/layout"
-import Image from "next/image"
-import image1 from "../assets/reminder.svg"
-import image2 from "../assets/push.svg"
-// @ts-ignore
-import Head from "next/head"
-
+import Layout from "../components/layout";
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import Loader from "../components/Loader";
 
 export default function IndexPage() {
+  const [isInitialCondition, setIsInitialCondition] = useState(false); // état du checkbox without_differential_equation_initial
+
+  const [inputEquaDiff, setInputEquaDiff] = useState("f' + f + x = 1");
+  const [inputFunctionLetter, setInputFunctionLetter] = useState("f");
+  const [inputVariable, setInputVariable] = useState("x");
+  const [inputInitialValue, setInputInitialValue] = useState("f(0)=2");
+
+  const [onLoad, setOnLoad] = useState(false);
+
+  const createJSONToSend = (e: any) => {
+    e.preventDefault();
+
+    // Construire l'objet JSON à partir des valeurs récupérées
+    const jsonData = {
+      equationInput: inputEquaDiff,
+      functionLetter: inputFunctionLetter,
+      variable: inputVariable,
+      initialCondition: {
+        hasInitialCondition: isInitialCondition,
+        initialValue: isInitialCondition ? inputInitialValue : null // si isInitialCondition est faux, on met null
+      }
+    };
+
+    // Utiliser jsonData comme vous en avez besoin (envoi à l'API, etc.)
+    console.log('JSON créé :', jsonData);
+
+
+    // Mettre onLoad à true
+    setOnLoad(true);
+
+    // Simuler un délai de 3 secondes avant de mettre onLoad à false
+    setTimeout(() => {
+      setOnLoad(false);
+    }, 3000);
+
+
+
+  };
+
+
+
+
+
+  async function testAPI(e: any) {
+    e.preventDefault();
+
+    // on recupere les données de l'input id = test
+    let testy = document.getElementById("test") as HTMLInputElement;
+    let testValue = testy.value;
+
+    console.log("Valeur de test avant l'envoi :", testValue);
+
+    const response = await fetch(`/api/test`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ test: testValue })
+    });
+
+    const data = await response.json();
+
+    console.log("responde data", data.result);
+  }
+
+
+
+
+
   return (
     <Layout>
       <Head>
-        <title>Remindr</title>
+        <title>Equa Diff</title>
         <meta name="description" content="Une application simple pour vous aider à ne plus rien oublier." />
       </Head>
 
+      <div className="container">
+        <div>
+          <center>
 
-      <center>
-        <h1 className="big-title" >Bienvenue sur Remindr</h1>
-        <h2>Une application simple pour vous aider à ne plus rien oublier.</h2>
+            <form action="" onSubmit={createJSONToSend}>
 
-        <div className="presentation-big-bloc" >
-          <p className="bloc-blue" >
-            <b>Bienvenue sur notre plateforme</b>, qui a pour but de simplifier la gestion de vos projets, devoirs et autres attendus à rendre. Avec <b>Remindr</b>, vous pouvez facilement créer des <b>rappels</b> pour vous-même et pour les autres membres de votre <b>groupe</b>, en fournissant toutes les informations nécessaires, telles que la date de rendu, une description, une couleur et même une photo si vous le souhaitez. <br />
-          </p>
-          <Image src={image1} alt="Picture of the author" width={400} height={400} />
+              {/* Equadiff à resoudre */}
+              <div>
+                <label htmlFor="">Equadiff à résoudre</label>
+                <input
+                  id="differential_equation_input"
+                  type="text"
+                  value={inputEquaDiff}
+                  onChange={(e) => setInputEquaDiff(e.target.value)}
+                />
+              </div>
+
+              {/* Lettre fonction */}
+              <label htmlFor="">Lettre représentant la fonction</label>
+              <input
+                id="differential_equation_function"
+                type="text"
+                value={inputFunctionLetter}
+                onChange={(e) => setInputFunctionLetter(e.target.value)}
+              />
+
+              {/* Variable */}
+              <label htmlFor="">Variable</label>
+              <input
+                id="differential_equation_variable"
+                type="text"
+                value={inputVariable}
+                onChange={(e) => setInputVariable(e.target.value)}
+              />
+
+
+              {/* Condition initiale */}
+              <label htmlFor="without_differential_equation_initial"> Sans condition initiale </label>
+              <input id="without_differential_equation_initial" type="radio" name="condition" onChange={() => setIsInitialCondition(false)} checked={!isInitialCondition} />
+
+              <label htmlFor="with_differential_equation_initial"> Avec condition initiale </label>
+              <input id="with_differential_equation_initial" type="radio" name="condition" onChange={() => setIsInitialCondition(true)} />
+
+              <input
+                id="differential_equation_initial_value"
+                className={isInitialCondition ? '' : 'disable'}
+                type="text"
+                value={inputInitialValue}
+                onChange={(e) => setInputInitialValue(e.target.value)}
+              />
+
+              {/* Bouton envoyer */}
+              <button type="submit"> SUBMIT </button>
+
+              {onLoad && <Loader />}
+            </form>
+
+
+          </center>
         </div>
-
-        <div className="presentation-big-bloc" >
-          <Image src={image2} alt="Picture of the author" width={400} height={400} />
-          <p className="bloc-blue" >
-            <b>Remindr</b> offre une fonctionnalité de groupe unique, qui vous permet d'inviter d'autres utilisateurs à rejoindre votre groupe sans avoir besoin de leurs adresses e-mail. Une fois qu'ils ont accepté votre invitation, vous pouvez tous <b>ajouter et modifier des rappels dans le groupe</b>. Vous pouvez également recevoir des rappels par e-mail une semaine avant la date limite, afin de ne jamais manquer un rendu important.<br />
-          </p>
+        <div>
+          <h1> doiahqduqsfqsgo </h1>
         </div>
-      </center>
-
+      </div>
     </Layout>
-  )
+  );
 }
-
-
