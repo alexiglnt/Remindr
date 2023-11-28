@@ -16,8 +16,6 @@
   margin: 0;
   background-color: var(--navbar-color);
   transition: all 0.2s ease-in;
-  display: flex;
-  justify-content: space-between;
 }
 
 .loading {
